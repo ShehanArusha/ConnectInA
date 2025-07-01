@@ -9,7 +9,7 @@ import com.example.connectin.data.supabase.SupabaseClient
 import com.example.connectin.ml.RecommendationEngine
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
-import io.github.jan.supabase.gotrue.user.UserSession
+import io.github.jan.supabase.gotrue.user.UserInfo
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +18,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 class MovieRepository {
 
@@ -32,12 +34,14 @@ class MovieRepository {
 
     // ===== Authentication =====
 
-    suspend fun signUp(email: String, password: String, username: String): Result<UserSession> {
+    suspend fun signUp(email: String, password: String, username: String): Result<UserInfo> {
         return try {
             val result = supabase.auth.signUpWith(Email) {
                 this.email = email
                 this.password = password
-                data = mapOf("username" to username)
+                data = buildJsonObject {
+                    put("username", username)
+                }
             }
 
             result?.let {
@@ -56,7 +60,7 @@ class MovieRepository {
         }
     }
 
-    suspend fun signIn(email: String, password: String): Result<UserSession> {
+    suspend fun signIn(email: String, password: String): Result<UserInfo> {
         return try {
             val result = supabase.auth.signInWith(Email) {
                 this.email = email
