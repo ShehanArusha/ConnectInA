@@ -2,6 +2,8 @@ package com.example.connectin.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Parcelize
 data class Movie(
@@ -36,21 +38,29 @@ data class Genre(
     val name: String
 ) : Parcelable
 
+@Serializable
 data class MovieLog(
     val id: String? = null,
+    @SerialName("user_id")
     val userId: String,
+    @SerialName("movie_id")
     val movieId: Int,
     val title: String,
+    @SerialName("genre_ids")
     val genreIds: List<Int>,
+    @SerialName("poster_path")
     val posterPath: String?,
+    @SerialName("watched_date")
     val watchedDate: String,
     val rating: Float? = null
 )
 
+@Serializable
 data class User(
     val id: String,
     val email: String,
     val username: String,
+    @SerialName("avatar_url")
     val avatarUrl: String? = null,
     val bio: String? = null
 )
