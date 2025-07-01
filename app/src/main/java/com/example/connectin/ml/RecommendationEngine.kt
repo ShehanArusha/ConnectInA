@@ -12,7 +12,7 @@ import kotlin.math.sqrt
 object RecommendationEngine {
 
     // Genre IDs from TMDb API
-    private val GENRE_MAP = mapOf(
+    private val GENRE_MAP: Map<Int, String> = mapOf(
         28 to "Action",
         12 to "Adventure",
         16 to "Animation",
@@ -88,17 +88,16 @@ object RecommendationEngine {
         // Aggregate genre preferences
         watchedMovies.forEach { movie ->
             val movieVector = movieToVector(movie)
-            for (i in movieVector.indices) {
-                profileVector[i] += movieVector[i]
+            movieVector.forEachIndexed { index, value ->
+                profileVector[index] = profileVector[index] + value
             }
         }
 
         // Normalize by the number of movies
-        for (i in profileVector.indices) {
-            profileVector[i] /= watchedMovies.size
+        val movieCount = watchedMovies.size.toDouble()
+        return DoubleArray(GENRE_MAP.size) { index ->
+            profileVector[index] / movieCount
         }
-
-        return profileVector
     }
 
     /**

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -19,9 +20,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Add your API keys here (replace with your actual keys)
-        buildConfigField("String", "TMDB_API_KEY", "72fec914b18f2c22563840bd67f67e98")
-        buildConfigField("String", "SUPABASE_URL", "https://tuobybaigcryevrqrldf.supabase.co")
-        buildConfigField("String", "SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2J5YmFpZ2NyeWV2cnFybGRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyNTcwMzUsImV4cCI6MjA2NjgzMzAzNX0.8PNTmvYcR2TOrummNC3jtm7xrmpzB0a-2zMtcZTzh5w")
+        buildConfigField("String", "TMDB_API_KEY", "\"72fec914b18f2c22563840bd67f67e98\"")
+        buildConfigField("String", "SUPABASE_URL", "\"https://tuobybaigcryevrqrldf.supabase.co\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2J5YmFpZ2NyeWV2cnFybGRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyNTcwMzUsImV4cCI6MjA2NjgzMzAzNX0.8PNTmvYcR2TOrummNC3jtm7xrmpzB0a-2zMtcZTzh5w\"")
     }
 
     buildTypes {
@@ -71,11 +72,20 @@ dependencies {
     // Image Loading
     implementation("io.coil-kt:coil-compose:2.5.0")
 
-    // Supabase
-    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.1.4")
-    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.1.4")
-    implementation("io.github.jan-tennert.supabase:realtime-kt:2.1.4")
+    // Supabase - Using BOM for version management
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.6.0"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt")
+    implementation("io.github.jan-tennert.supabase:realtime-kt")
+    implementation("io.github.jan-tennert.supabase:storage-kt")
+
+    // Ktor client for Supabase
     implementation("io.ktor:ktor-client-android:2.3.7")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+
+    // Kotlinx Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     // DataStore for preferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
