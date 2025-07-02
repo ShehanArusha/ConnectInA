@@ -21,9 +21,9 @@ sealed class BottomNavItem(
     val icon: androidx.compose.ui.graphics.vector.ImageVector,
     val label: String
 ) {
-    object Home : BottomNavItem("bottom_home", Icons.Default.Home, "Home")
-    object Movies : BottomNavItem("bottom_movies", Icons.Default.Movie, "Movies")
-    object Profile : BottomNavItem("bottom_profile", Icons.Default.Person, "Profile")
+    object Home : BottomNavItem("bottom_home", Icons.Filled.Home, "Home")
+    object Movies : BottomNavItem("bottom_movies", Icons.Filled.Movie, "Movies")
+    object Profile : BottomNavItem("bottom_profile", Icons.Filled.Person, "Profile")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

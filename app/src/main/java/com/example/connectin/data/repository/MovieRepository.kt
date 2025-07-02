@@ -62,13 +62,16 @@ class MovieRepository {
 
     suspend fun signIn(email: String, password: String): Result<UserInfo> {
         return try {
-            val result = supabase.auth.signInWith(Email) {
+            supabase.auth.signInWith(Email) {
                 this.email = email
                 this.password = password
             }
-            result?.let {
+
+            // After successful sign in, get the current user info
+            val currentUser = supabase.auth.currentUserOrNull()
+            currentUser?.let {
                 Result.success(it)
-            } ?: Result.failure(Exception("Sign in failed"))
+            } ?: Result.failure(Exception("Failed to get user info after sign in"))
         } catch (e: Exception) {
             Result.failure(e)
         }
